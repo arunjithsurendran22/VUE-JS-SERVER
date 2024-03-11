@@ -20,6 +20,17 @@ const userSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  currentCity: {
+    type: String,
+    default: "Delhi",
+  },
+  multiplePlace: [
+    {
+      name: {
+        type: String,
+      },
+    },
+  ],
 });
 
 const userModel = mongoose.model("user", userSchema);

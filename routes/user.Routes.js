@@ -1,12 +1,16 @@
 import express from "express";
 import userProfileRoute from "./user.Profile.Route.js";
-
+import UserWeatherRoute from './user.Weather.Route.js'
 const router = express.Router();
 
 const defaultRoutes = [
   {
     path: "/user/profile",
     route: userProfileRoute,
+  },
+  {
+    path: "/user/weather",
+    route: UserWeatherRoute,
   },
 ];
 
