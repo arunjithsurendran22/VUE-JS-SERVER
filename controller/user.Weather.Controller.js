@@ -53,11 +53,10 @@ const getCurrentCity = async (req, res, next) => {
   }
 };
 
-// POST: Save multiple places for user
 const addMultiplePlaces = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const placeName = req.body.newPlace; 
+    const placeName = req.body.newPlace;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -66,6 +65,14 @@ const addMultiplePlaces = async (req, res, next) => {
     const existingUser = await userModel.findById(userId);
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the place already exists in the user's list of multiple places
+    const isExistingPlace = existingUser.multiplePlace.some(
+      (place) => place.name === placeName
+    );
+    if (isExistingPlace) {
+      return res.status(400).json({ message: "Place already exists" });
     }
 
     // Create a new place object
@@ -77,7 +84,7 @@ const addMultiplePlaces = async (req, res, next) => {
     await existingUser.save(); // Save the user with updated multiple places
 
     res.status(200).json({
-      message: "Multiple places saved successfully",
+      message: "weather saved successfully",
       user: existingUser,
     });
   } catch (error) {
@@ -101,7 +108,7 @@ const getMultiplePlaces = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const multiplePlaces = existingUser.multiplePlace
+    const multiplePlaces = existingUser.multiplePlace;
 
     res.status(200).json({ multiplePlaces });
   } catch (error) {
@@ -116,7 +123,6 @@ const deleteMultiplePlaces = async (req, res, next) => {
   try {
     const userId = req.userId;
     const placeId = req.params.placeId;
-
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
